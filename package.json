@@ -1,0 +1,14 @@
+{
+  "name": "lxe-dotfiles",
+  "version": "0.1.0",
+  "description": "@lxe's dotfiles",
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/lxe/dotfiles"
+  },
+  "keywords": [
+    "dotfiles"
+  ],
+  "author": "Aleksey Smolenchuk <lxe@lxe.co>",
+  "license": "ISC"
+}

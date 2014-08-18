@@ -1,0 +1,121 @@
+augroup reload_vimrc " {
+  autocmd!
+  autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END " }
+
+if has('vim_starting')
+
+  set nocompatible
+  set expandtab
+  set shiftwidth=2
+  set softtabstop=2
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+
+  set number
+  set numberwidth=4
+
+  syntax on
+  colorscheme molokai
+  let g:molokai_original=1
+
+  highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+
+  " hi LineNr  guifg=#000000   guibg=Black
+  " hi Normal  guifg=White     guibg=Black
+
+  set bs=2
+  " set columns=80
+  " set background=dark
+  " set wrapmargin=8
+  set ruler
+
+
+  " Send more characters for redraws
+  set ttyfast
+  "
+  " Enable mouse use in all modes
+  set mouse=a
+  "
+  " Set this to the name of your terminal that supports mouse codes.
+  " Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
+  set ttymouse=xterm2
+
+  function! s:swap_lines(n1, n2)
+    let line1 = getline(a:n1)
+    let line2 = getline(a:n2)
+    call setline(a:n1, line2)
+    call setline(a:n2, line1)
+  endfunction
+
+  function! s:swap_up()
+    let n = line('.')
+    if n == 1
+      return
+    endif
+
+    call s:swap_lines(n, n - 1)
+    exec n - 1
+  endfunction
+
+  function! s:swap_down()
+    let n = line('.')
+    if n == line('$')
+      return
+    endif
+
+    call s:swap_lines(n, n + 1)
+    exec n + 1
+  endfunction
+
+  noremap <silent> <c-s-up> :call <SID>swap_up()<CR>
+  noremap <silent> <c-s-down> :call <SID>swap_down()<CR> 
+
+  " tab navigation like firefox
+  nnoremap <C-S-tab> :tabprevious<CR>
+  nnoremap <C-tab>   :tabnext<CR>
+  nnoremap <C-t>     :tabnew<CR>
+  inoremap <C-S-tab> <Esc>:tabprevious<CR>i
+  inoremap <C-tab>   <Esc>:tabnext<CR>i
+  inoremap <C-t>     <Esc>:tabnew<CR>
+
+  set wrap
+  set linebreak
+  " note trailing space at end of next line
+  " set showbreak=>\ \ \
+  highlight ExtraWhitespace ctermbg=red guibg=red
+  match ExtraWhitespace /\s\+$/
+
+  autocmd BufWritePre *.js :%s/\s\+$//e
+
+  set hlsearch
+endif
+
+" Required:
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" My Bundles here:
+" Refer to |:NeoBundle-examples|.
+" Note: You don't set neobundle setting in .gvimrc!
+
+NeoBundle 'bling/vim-airline'
+set laststatus=2
+set ttimeoutlen=50
+set encoding=utf-8
+let g:airline_theme="molokai"
+let g:airline_powerline_fonts=1
+
+NeoBundle 'kien/ctrlp.vim'
+
+call neobundle#end()
+
+" Required:
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+
